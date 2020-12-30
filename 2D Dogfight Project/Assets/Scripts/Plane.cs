@@ -9,6 +9,8 @@ public class Plane : MonoBehaviour
 
     float Xmove;
     float Ymove;
+    Vector2 movement;
+
     [SerializeField]
     float _Rotation;
 
@@ -40,18 +42,44 @@ public class Plane : MonoBehaviour
             CardAsset ca = m.transform.GetComponentInChildren<CardManager>().cardAsset;
             Xmove = (-ca._lowStartPoint.x + ca._lowEndPoint.x) / scale;
             Ymove = (-ca._lowStartPoint.y + ca._lowEndPoint.y) / scale;
-            Vector2 movement = new Vector2(Xmove, Ymove);
 
-            _Rotation = ca._rotation;
+            //Change vector regarding starting orientation
+            switch (ca.orientation.ToString())
+            {
+                case "South":
+                    movement = new Vector2(Xmove, Ymove);
+                    break;
 
-            Quaternion quaternion = Quaternion.AngleAxis(_Rotation, Vector3.forward);
-            //Vector3 rotatedVector = quaternion * movement;
-            //Debug.Log("Destination: X= " + transform.position.x + rotatedVector.x + ", Y= " + transform.position.y + rotatedVector.y);
+                case "West":
+                    movement = new Vector2(-Ymove, Xmove);
+                    break;
 
+                case "East":
+                    movement = new Vector2(Ymove, -Xmove);
+                    break;
+
+                case "North":
+                    movement = new Vector2(-Xmove, -Ymove);
+                    break;
+
+                default:
+                    Debug.Log("Card orientation not recognized");
+                    movement = new Vector2(Xmove, Ymove);
+                    break;
+            }
             
-            transform.Translate(movement);            
-            //transform.Translate(rotatedVector);
+
+            //Move the model
+            transform.Translate(movement);
+
+            //Rotate the model
+            _Rotation = ca._rotation;
+            Quaternion quaternion = Quaternion.AngleAxis(_Rotation, Vector3.forward);
             transform.rotation = transform.rotation * quaternion;
+
+                      
+            
+            
 
 
         }
