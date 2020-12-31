@@ -24,6 +24,8 @@ public class CardManager : MonoBehaviour {
     private Vector2 highEnd;
     private float rotation;
 
+    public int positionInHand;
+
     public bool _DebugMode;
     public Text Infos;
     

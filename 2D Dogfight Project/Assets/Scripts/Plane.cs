@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Plane : MonoBehaviour
 {
-    [SerializeField] private GameObject[] maneuvers;
-    [SerializeField] private float scale;
+    GameObject[] maneuvers;
+
+    private float scale;
 
     float Xmove;
     float Ymove;
     Vector2 movement;
-
-    [SerializeField]
+    
     float _Rotation;
 
 

@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class DraggableUI_Overlay : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    private Canvas UI;
+    private Canvas canvas;
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
 
@@ -14,9 +14,9 @@ public class DraggableUI_Overlay : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     private void Awake()
     {
-        UI = GameObject.Find("UI").GetComponent<Canvas>();
-        canvasGroup = GetComponent<CanvasGroup>();
-        rectTransform = GetComponent<RectTransform>();
+       canvas = GetComponent<Canvas>();
+       canvasGroup = GetComponent<CanvasGroup>();
+       rectTransform = GetComponent<RectTransform>();
     }
 
 
@@ -30,9 +30,9 @@ public class DraggableUI_Overlay : MonoBehaviour, IBeginDragHandler, IDragHandle
     public void OnDrag(PointerEventData eventData)
     {
         Vector3 mousePos = MouseInWorldCoords();
-        //Debug.Log(mousePos);        
-        rectTransform.anchoredPosition += eventData.delta / UI.scaleFactor;
-        //UI.overrideSorting = true;
+        //Debug.Log(mousePos);
+        rectTransform.anchoredPosition += eventData.delta; /// canvas.scaleFactor;
+        canvas.overrideSorting = true;
     }
 
     
@@ -40,7 +40,7 @@ public class DraggableUI_Overlay : MonoBehaviour, IBeginDragHandler, IDragHandle
     {
         rectTransform.anchoredPosition = Vector3.zero;
         canvasGroup.blocksRaycasts = true;
-        //UI.overrideSorting = false;        
+        canvas.overrideSorting = false;        
     }
     
 

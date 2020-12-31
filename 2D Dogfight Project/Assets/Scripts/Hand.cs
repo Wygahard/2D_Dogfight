@@ -5,7 +5,8 @@ using UnityEngine;
 public class Hand : MonoBehaviour
 {
     public List<GameObject> cardsInHand = new List<GameObject>();
-    [SerializeField] private GameObject[] slots;
+    [SerializeField]
+    private GameObject[] slots;
 
     private void Start()
     {
@@ -23,6 +24,7 @@ public class Hand : MonoBehaviour
         //card equal slots is counted as true even without <=
         if (cardsInHand.Count < slots.Length)
         {
+            int i = 0;
             foreach (GameObject slot in slots)
             {
                 //Take the next inactive slot
@@ -30,14 +32,14 @@ public class Hand : MonoBehaviour
                 {
                     slot.SetActive(true);
                     GameObject _card = deck.GetComponent<Deck>().DrawCard();
-
                     cardsInHand.Add(_card);
                     _card.transform.SetParent(slot.transform);
                     _card.transform.position = slot.transform.position;
+                    _card.GetComponent<CardManager>().positionInHand = i;
                     return;
                 }
+                i++;
             }
-
         }
         else
         {
@@ -48,13 +50,27 @@ public class Hand : MonoBehaviour
     public void RemoveCard(GameObject card)
     {
         cardsInHand.Remove(card);
-        foreach(GameObject g in cardsInHand)
+        RepositionCards();
+    }
+
+    public void RemoveCard(int i)
+    {
+        cardsInHand.RemoveAt(i);
+        RepositionCards();        
+    }
+
+    private void RepositionCards()
+    {
+        foreach (GameObject g in cardsInHand)
         {
-            g.transform.SetParent(slots[cardsInHand.IndexOf(g)].transform);
+            int newpos = cardsInHand.IndexOf(g);
+            g.transform.SetParent(slots[newpos].transform);
+            g.GetComponent<CardManager>().positionInHand = newpos;
             g.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
         }
         DeactivateEmptySlot();
     }
+
 
     private void DeactivateEmptySlot()
     {
