@@ -10,7 +10,7 @@ public class Maneuver : MonoBehaviour, IDropHandler
     public int numberInList;
     public Text numberToDisplay;
     public Hand hand;
-    public bool _containCard;
+    public GameObject _card;
 
     public GameObject planeOutline;
     //public GameObject planeLastKnownPosition = new GameObject();
@@ -22,72 +22,76 @@ public class Maneuver : MonoBehaviour, IDropHandler
     Vector2 movement;
 
     Quaternion _currentRotation;
-    float _Rotation;
-
-
-    public void OnEnable()
-    {
-        ManeuversManager.onCardDrop += UpdateOutline;
-    }
-
-    public void OnDisable()
-    {
-        ManeuversManager.onCardDrop -= UpdateOutline;
-    }
+    float _Rotation;    
 
     private void Start()
     {
         maneuversManager = transform.GetComponentInParent<ManeuversManager>();
         //hand = maneuversManager.player.hand;
         _currentRotation = transform.rotation;
-        _containCard = false;        
+    }
+       
+    //planeOutline.SetActive(true);
+
+    //CHECK IF CONTAINS CARD
+    public bool ContainCard()
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.CompareTag("Card"))
+            {
+                _card = child.gameObject;
+                return true;
+            }
+        }
+        //Deactivate card if it's associate to another parent
+        if (_card != null)
+            _card = null;
+
+        return false;
     }
 
-    
-    public void Update()
-    {        
-        if (_containCard && _Preview)
-        {
-            planeOutline.SetActive(true);
-        }
-        else
-        {
-            planeOutline.SetActive(false);
-        }
-    }
-    
 
     public void OnDrop(PointerEventData eventData)
     {
-        //Debug.Log("OnDrop" + name);
-        foreach (Transform child in transform)
+        GameObject newCard = eventData.pointerDrag.gameObject;
+
+        if (eventData.pointerDrag != null && newCard.tag == "Card")
         {
-            if (child.tag == "Card")
+            //IS THE CARD COMING FROM THE HAND OR ANOTHER SLOT
+            switch (newCard.transform.parent.tag)
             {
-                _containCard = true;
-                return;
+                case "ManeuverSlot":
+                    //Switch cards if there's already one in the slot
+                    if(ContainCard())
+                    {
+                        foreach (Transform child in transform)
+                        {
+                            if (child.CompareTag("Card"))
+                            {
+                                child.SetParent(newCard.transform.parent);
+                                child.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
+                                _card = null;
+                            }                                
+                        }
+                    }
+                    break;
+
+                case "HandSlot":
+                    hand.RemoveCard(newCard);
+                    break;
+
+                default:
+                    Debug.LogError("Tag Parent of Card is not recognized");
+                    break;
             }
-        }
-        _containCard = false;
 
-        if (eventData.pointerDrag != null && !_containCard && eventData.pointerDrag.gameObject.tag == "Card")
-        {
-            //eventData.pointerDrag.GetComponent<Transform>().transform.position = transform.position;
-            GameObject card = eventData.pointerDrag.gameObject;
-            hand.RemoveCard(card);
-            card.GetComponent<Transform>().SetParent(transform);
-            _containCard = true;
-
-            //GET CARD DATA
-            CardAsset ca = transform.GetComponentInChildren<CardManager>().cardAsset;
-            _Rotation = ca._rotation;
-            movement = GetMovement(ca);
+            _card = newCard;
+            _card.transform.SetParent(transform);
             
-            //UPDATE VECTOR LIST, WILL REFRESH OUTLINE POSITIONS
-            maneuversManager.UpdateVectorList(movement, numberInList);
+            maneuversManager.DropHappened();
         }
     }
-
 
     //CALLED BY MANEUVER MANAGER WITH GetManeuversSlots()
     public void UpdateNumberList(int i)
@@ -96,23 +100,30 @@ public class Maneuver : MonoBehaviour, IDropHandler
         numberToDisplay.text = (numberInList + 1).ToString();
     }
 
+
     //CALLED BY MANEUVER MANAGER WITH UpdateDic
     public void UpdateOutline()
     {
-        //SET STARTING POINT
-        //planeOutline.transform.position = planeLastKnownPosition.transform.position;
-        //planeOutline.transform.rotation = planeLastKnownPosition.transform.rotation;
-        
-        planeOutline.transform.Translate(movement);
+        //Maneuver Manager is in charge of setting the starting plane   
+        planeOutline.transform.Translate(GetMovement());
+
+        CardAsset ca = _card.GetComponent<CardManager>().cardAsset;
+        _Rotation = ca._rotation;
+
         Quaternion quaternion = Quaternion.AngleAxis(_Rotation, Vector3.forward);
-        planeOutline.transform.rotation = planeOutline.transform.rotation * quaternion;
-        
+        planeOutline.transform.rotation = planeOutline.transform.rotation * quaternion;        
     }
 
 
-    public Vector2 GetMovement(CardAsset ca)
+    public Vector2 GetMovement()
     {
-        float scale = 100f;
+        if (!ContainCard())
+            Debug.LogWarning("GetMovement was called but no card is attached to" + name);
+
+        //GET CARD DATA
+        CardAsset ca = _card.GetComponent<CardManager>().cardAsset;        
+
+        float scale = 50f;
 
         Vector2 movement;
         //CardAsset ca = transform.GetComponentInChildren<CardManager>().cardAsset;

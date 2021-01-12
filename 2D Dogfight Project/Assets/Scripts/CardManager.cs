@@ -6,6 +6,9 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Sprite))]
 public class CardManager : MonoBehaviour {
 
+
+    
+
     public CardAsset cardAsset;
     [Header("Image References")]
     public Sprite CardGraphicImage;
@@ -28,8 +31,8 @@ public class CardManager : MonoBehaviour {
 
     public bool _DebugMode;
     public Text Infos;
-    
-   
+
+
     void Awake()
     {
         if (cardAsset != null && !_DebugMode)

@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ManeuversManager : MonoBehaviour
 {
-    public delegate void OnCardDrop();
-    public static event OnCardDrop onCardDrop;
+    [SerializeField] private OnDropEvent _onDropEvent;
 
     public List<Maneuver> maneuversSlots = new List<Maneuver>();
     public Dictionary<int, Vector2> cardsVector = new Dictionary<int, Vector2>();
@@ -22,6 +22,23 @@ public class ManeuversManager : MonoBehaviour
 
         GetManeuversSlots();
     }
+
+    private void OnEnable()
+    {
+        _onDropEvent.onDropEvent += DropHappened;
+    }
+
+
+    private void OnDisable()
+    {
+        _onDropEvent.onDropEvent -= DropHappened;
+    }
+
+    public void DropHappened()
+    {
+        SetUpLastPlane();
+    }
+
 
     public void GetManeuversSlots()
     {
@@ -43,7 +60,6 @@ public class ManeuversManager : MonoBehaviour
     }
 
 
-
     public void UpdateVectorList(Vector2 movement, int numberInList)
     {
         if (cardsVector.ContainsKey(numberInList))
@@ -51,31 +67,48 @@ public class ManeuversManager : MonoBehaviour
         
         cardsVector.Add(numberInList, movement);
 
+        //Get Dictionnary value for debugging
         /*
         foreach(KeyValuePair<int, Vector2> valuePair in cardsVector)
         {           
             Debug.Log("Key:" + valuePair.Key + " , Value: " + valuePair.Value);            
-        }*/
-
-        SetUpLastPlane();
-
+        }
+        */
     }
 
     public void SetUpLastPlane()
     {
+        bool _isPreviousSlotFull = true;
+
         foreach (var maneuver in maneuversSlots)
         {
-            if (!maneuver._containCard)
-            {
-                return;
-            }
-
-            int i = maneuversSlots.IndexOf(maneuver);
-            GameObject lastPlane = PlaneLastPosition(i);
-            maneuver.planeOutline.transform.position = lastPlane.transform.position;
-            maneuver.planeOutline.transform.rotation = lastPlane.transform.rotation;
             
-            maneuver.UpdateOutline();
+            if (maneuver.ContainCard())
+            {                
+                int i = maneuversSlots.IndexOf(maneuver);
+                UpdateVectorList(maneuver.GetMovement(), i);
+
+                GameObject lastPlane = PlaneLastPosition(i);
+                
+                maneuver.planeOutline.transform.position = lastPlane.transform.position;
+                maneuver.planeOutline.transform.rotation = lastPlane.transform.rotation;                
+
+                if (_isPreviousSlotFull)
+                {
+                    maneuver.planeOutline.SetActive(true);
+                }
+                else
+                {
+                    maneuver.planeOutline.SetActive(false);
+                }
+
+                maneuver.UpdateOutline();
+            }
+            else
+            {
+                _isPreviousSlotFull = false;
+                maneuver.planeOutline.SetActive(false);
+            }            
         }
     }
 

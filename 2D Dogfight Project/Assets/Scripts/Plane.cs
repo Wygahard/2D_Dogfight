@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Plane : MonoBehaviour
 {
+    
     GameObject[] maneuvers;
 
     private float scale;
@@ -22,9 +23,12 @@ public class Plane : MonoBehaviour
         scale = 100f;       
     }
 
+    
+    
     private void OnDisable()
     {
         GameManager.Instance.onEndTurn -= MovePlane;
+        
     }
 
 

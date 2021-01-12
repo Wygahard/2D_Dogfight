@@ -16,7 +16,6 @@ public class Deck : MonoBehaviour {
 
     public GameObject DrawCard()
     {
-
         CardAsset ca = cards[Random.Range(0, cards.Count)];
         
         GameObject _card = Instantiate(_cardPrefab);

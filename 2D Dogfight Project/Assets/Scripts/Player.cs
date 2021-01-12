@@ -8,15 +8,14 @@ public class Player : MonoBehaviour
     public Hand hand;
     public GameObject plane;
 
+   
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            var myHand = hand.GetComponent<Hand>();
-            var myDeck = deck.GetComponent<Deck>();
-
-            myHand.PlaceCard(myDeck);
-           
+            //Draw a card and place it in the hand
+            GameObject card = deck.DrawCard();
+            hand.PlaceCard(card); 
         }
     }
 }

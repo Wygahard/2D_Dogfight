@@ -396,6 +396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b0cbf7476e459147b7eb0a6d051314a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onDropEvent: {fileID: 11400000, guid: 82e3b97ffd89d4d4787e53778a65a79c, type: 2}
   cardAsset: {fileID: 11400000, guid: 4ce7e280beef47a428e7acc6defccd1e, type: 2}
   CardGraphicImage: {fileID: -8680797543115379092, guid: e8197ce13da04d641a9430a3cf783f8e,
     type: 3}
@@ -405,6 +406,7 @@ MonoBehaviour:
   HighStartPoint: {fileID: 5311195683742330968}
   HighEndPoint: {fileID: 5311195685084204633}
   PlaneZ: {fileID: 5311195684851498702}
+  positionInHand: 0
   _DebugMode: 0
   Infos: {fileID: 5311195684106325380}
 --- !u!114 &20604236

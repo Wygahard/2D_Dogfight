@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 397753834}
   m_Layer: 5
   m_Name: Slot (0)
-  m_TagString: Untagged
+  m_TagString: HandSlot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 401077518}
   m_Layer: 5
   m_Name: Slot (3)
-  m_TagString: Untagged
+  m_TagString: HandSlot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -248,7 +248,7 @@ GameObject:
   - component: {fileID: 430431096}
   m_Layer: 5
   m_Name: SlotManeuver1
-  m_TagString: Untagged
+  m_TagString: ManeuverSlot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -289,7 +289,6 @@ MonoBehaviour:
   numberInList: 0
   numberToDisplay: {fileID: 719282703}
   hand: {fileID: 0}
-  _containCard: 0
   planeOutline: {fileID: 577403452}
   _Preview: 1
 --- !u!114 &430431097
@@ -340,7 +339,7 @@ GameObject:
   - component: {fileID: 512258601}
   m_Layer: 5
   m_Name: Slot (6)
-  m_TagString: Untagged
+  m_TagString: HandSlot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -537,6 +536,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab217063d9e15ad46ab925bd5059731b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onDropEvent: {fileID: 11400000, guid: 82e3b97ffd89d4d4787e53778a65a79c, type: 2}
   maneuversSlots: []
   player: {fileID: 0}
   hand: {fileID: 0}
@@ -1093,7 +1093,7 @@ GameObject:
   - component: {fileID: 1071953901}
   m_Layer: 5
   m_Name: SlotManeuver2
-  m_TagString: Untagged
+  m_TagString: ManeuverSlot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1134,7 +1134,6 @@ MonoBehaviour:
   numberInList: 0
   numberToDisplay: {fileID: 625973610}
   hand: {fileID: 0}
-  _containCard: 0
   planeOutline: {fileID: 942007842}
   _Preview: 1
 --- !u!114 &1071953902
@@ -1185,7 +1184,7 @@ GameObject:
   - component: {fileID: 1079910510}
   m_Layer: 5
   m_Name: Slot (1)
-  m_TagString: Untagged
+  m_TagString: HandSlot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1220,7 +1219,7 @@ GameObject:
   - component: {fileID: 1082674676}
   m_Layer: 5
   m_Name: Slot (5)
-  m_TagString: Untagged
+  m_TagString: HandSlot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1258,7 +1257,7 @@ GameObject:
   - component: {fileID: 1307980331}
   m_Layer: 5
   m_Name: SlotManeuver0
-  m_TagString: Untagged
+  m_TagString: ManeuverSlot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1336,7 +1335,6 @@ MonoBehaviour:
   numberInList: 0
   numberToDisplay: {fileID: 2036916634}
   hand: {fileID: 0}
-  _containCard: 0
   planeOutline: {fileID: 1868643584}
   _Preview: 1
 --- !u!1 &1318853549
@@ -1350,7 +1348,7 @@ GameObject:
   - component: {fileID: 1318853550}
   m_Layer: 5
   m_Name: Slot (4)
-  m_TagString: Untagged
+  m_TagString: HandSlot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1545,6 +1543,11 @@ PrefabInstance:
       propertyPath: maneuvers.Array.data[2]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1392038650, guid: 393fb1cf890b03f41b5ca53057a7773b, type: 3}
+      propertyPath: _onDropEvent
+      value: 
+      objectReference: {fileID: 11400000, guid: 82e3b97ffd89d4d4787e53778a65a79c,
+        type: 2}
     - target: {fileID: 988279987065427513, guid: 393fb1cf890b03f41b5ca53057a7773b,
         type: 3}
       propertyPath: m_Name
@@ -1687,6 +1690,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a80005224830b864f92c705e4e52cfc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onDropEvent: {fileID: 11400000, guid: 82e3b97ffd89d4d4787e53778a65a79c, type: 2}
   cardsInHand: []
   slots:
   - {fileID: 397753833}
@@ -1707,7 +1711,7 @@ GameObject:
   - component: {fileID: 1796489615}
   m_Layer: 5
   m_Name: Slot (2)
-  m_TagString: Untagged
+  m_TagString: HandSlot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

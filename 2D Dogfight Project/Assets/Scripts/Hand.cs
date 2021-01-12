@@ -1,25 +1,39 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Hand : MonoBehaviour
+public class Hand : MonoBehaviour, IDropHandler
+
 {
-    public List<GameObject> cardsInHand = new List<GameObject>();
-    [SerializeField]
-    private GameObject[] slots;
+    [SerializeField] private OnDropEvent _onDropEvent;
+
+    public List<GameObject> cardsInHand = new List<GameObject>();    
+
+    [SerializeField] private GameObject[] slots;
+
 
     private void Start()
     {
         DeactivateEmptySlot();
+        
+    }
+
+    private void OnEnable()
+    {
+        _onDropEvent.onDropEvent += CheckDrop;
         GameManager.Instance.onEndTurn += FreezeCards;
     }
-    
+
+
     private void OnDisable()
     {
+        _onDropEvent.onDropEvent -= CheckDrop;
         GameManager.Instance.onEndTurn -= FreezeCards;
     }
 
-    public void PlaceCard(Deck deck)
+
+    public void PlaceCard(GameObject _card)
     {
         //card equal slots is counted as true even without <=
         if (cardsInHand.Count < slots.Length)
@@ -31,11 +45,12 @@ public class Hand : MonoBehaviour
                 if (slot.activeInHierarchy == false)
                 {
                     slot.SetActive(true);
-                    GameObject _card = deck.GetComponent<Deck>().DrawCard();
+                    
                     cardsInHand.Add(_card);
                     _card.transform.SetParent(slot.transform);
                     _card.transform.position = slot.transform.position;
-                    _card.GetComponent<CardManager>().positionInHand = i;
+                    _card.GetComponent<CardManager>().positionInHand = i;                    
+
                     return;
                 }
                 i++;
@@ -45,6 +60,24 @@ public class Hand : MonoBehaviour
         {
             Debug.Log("Hand limit reached");
         }
+    }
+
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        GameObject card = eventData.pointerDrag.gameObject;
+
+        if (eventData.pointerDrag != null && card.tag == "Card")
+        {
+            PlaceCard(card);
+            //Drop happened, we want game to refresh
+            _onDropEvent.DropHappened();
+        }
+    }
+
+    private void CheckDrop()
+    {
+        Debug.Log("Drop checked");
     }
 
     public void RemoveCard(GameObject card)
@@ -70,7 +103,6 @@ public class Hand : MonoBehaviour
         }
         DeactivateEmptySlot();
     }
-
 
     private void DeactivateEmptySlot()
     {
