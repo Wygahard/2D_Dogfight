@@ -12,7 +12,7 @@ public class OnDropEvent : ScriptableObject
 
     public void DropHappened()
     {
-        Debug.Log("DropHappened was called");
+        //Debug.Log("DropHappened was called");
 
         if (onDropEvent != null)
         {

@@ -34,10 +34,16 @@ public class ManeuversManager : MonoBehaviour
         _onDropEvent.onDropEvent -= DropHappened;
     }
 
-    public void DropHappened()
+    private void DropHappened()
     {
         SetUpLastPlane();
     }
+
+    public void TriggerDropCheck()
+    {
+        _onDropEvent.DropHappened();
+    }
+
 
 
     public void GetManeuversSlots()

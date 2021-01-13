@@ -77,7 +77,7 @@ public class Hand : MonoBehaviour, IDropHandler
 
     private void CheckDrop()
     {
-        Debug.Log("Drop checked");
+        RepositionCards();
     }
 
     public void RemoveCard(GameObject card)

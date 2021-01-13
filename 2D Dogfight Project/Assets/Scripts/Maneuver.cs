@@ -89,7 +89,7 @@ public class Maneuver : MonoBehaviour, IDropHandler
             _card = newCard;
             _card.transform.SetParent(transform);
             
-            maneuversManager.DropHappened();
+            maneuversManager.TriggerDropCheck();
         }
     }
 
