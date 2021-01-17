@@ -22,14 +22,14 @@ public class Hand : MonoBehaviour, IDropHandler
     private void OnEnable()
     {
         _onDropEvent.onDropEvent += CheckDrop;
-        GameManager.Instance.onEndTurn += FreezeCards;
+        //GameManager.Instance.onEndTurn += FreezeCards;
     }
 
 
     private void OnDisable()
     {
         _onDropEvent.onDropEvent -= CheckDrop;
-        GameManager.Instance.onEndTurn -= FreezeCards;
+        //GameManager.Instance.onEndTurn -= FreezeCards;
     }
 
 

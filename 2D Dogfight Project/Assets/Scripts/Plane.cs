@@ -18,7 +18,7 @@ public class Plane : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.onEndTurn += MovePlane;
+        //GameManager.Instance.onEndTurn += MovePlane;
         transform.position = new Vector2(0,-4);
         scale = 100f;       
     }
@@ -27,7 +27,7 @@ public class Plane : MonoBehaviour
     
     private void OnDisable()
     {
-        GameManager.Instance.onEndTurn -= MovePlane;
+        //GameManager.Instance.onEndTurn -= MovePlane;
         
     }
 

@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 
-[CreateAssetMenu(fileName = "OnDropEvent", menuName = "Game /Management")]
+[CreateAssetMenu(fileName = "OnDropEvent", menuName = "Game /OnDropEvent")]
 public class OnDropEvent : ScriptableObject
 {
     public event UnityAction onDropEvent;

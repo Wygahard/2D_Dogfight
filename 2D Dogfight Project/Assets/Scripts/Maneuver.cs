@@ -65,20 +65,20 @@ public class Maneuver : MonoBehaviour, IDropHandler
                     //Switch cards if there's already one in the slot
                     if(ContainCard())
                     {
-                        foreach (Transform child in transform)
-                        {
-                            if (child.CompareTag("Card"))
-                            {
-                                child.SetParent(newCard.transform.parent);
-                                child.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
-                                _card = null;
-                            }                                
-                        }
+                        _card.transform.SetParent(newCard.transform.parent);
+                        _card.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
+                        _card = null;
                     }
                     break;
 
-                case "HandSlot":
+                case "HandSlot":                    
                     hand.RemoveCard(newCard);
+                    //Switch cards if there's already one in the slot
+                    if (ContainCard())
+                    {
+                        hand.PlaceCard(_card);
+                        _card = null;
+                    }
                     break;
 
                 default:
