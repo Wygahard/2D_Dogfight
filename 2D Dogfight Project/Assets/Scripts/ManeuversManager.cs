@@ -6,9 +6,12 @@ using UnityEngine.EventSystems;
 public class ManeuversManager : MonoBehaviour
 {
     [SerializeField] private OnDropEvent _onDropEvent;
+    [SerializeField] private TurnManagerSO _turnManager;
 
     public List<Maneuver> maneuversSlots = new List<Maneuver>();
-    public Dictionary<int, Vector2> cardsVector = new Dictionary<int, Vector2>();
+    public Dictionary<int, Vector2> CardsVectorDic = new Dictionary<int, Vector2>();
+    public Dictionary<int, Quaternion> CardsQuaternionDic = new Dictionary<int, Quaternion>();
+   
     public Player player;
     public Hand hand;
     public GameObject plane;
@@ -26,12 +29,14 @@ public class ManeuversManager : MonoBehaviour
     private void OnEnable()
     {
         _onDropEvent.onDropEvent += DropHappened;
+        _turnManager.OnEndTurn += TurnEnd;
     }
 
 
     private void OnDisable()
     {
         _onDropEvent.onDropEvent -= DropHappened;
+        _turnManager.OnEndTurn -= TurnEnd;
     }
 
     private void DropHappened()
@@ -43,7 +48,6 @@ public class ManeuversManager : MonoBehaviour
     {
         _onDropEvent.DropHappened();
     }
-
 
 
     public void GetManeuversSlots()
@@ -66,12 +70,12 @@ public class ManeuversManager : MonoBehaviour
     }
 
 
-    public void UpdateVectorList(Vector2 movement, int numberInList)
+    public void UpdateVectorDict(Vector2 movement, int numberInList)
     {
-        if (cardsVector.ContainsKey(numberInList))
-            cardsVector.Remove(numberInList);
+        if (CardsVectorDic.ContainsKey(numberInList))
+            CardsVectorDic.Remove(numberInList);
         
-        cardsVector.Add(numberInList, movement);
+        CardsVectorDic.Add(numberInList, movement);
 
         //Get Dictionnary value for debugging
         /*
@@ -81,6 +85,15 @@ public class ManeuversManager : MonoBehaviour
         }
         */
     }
+
+    public void UpdateQuaternionDict(Quaternion rotation, int numberInList)
+    {
+        if (CardsQuaternionDic.ContainsKey(numberInList))
+            CardsQuaternionDic.Remove(numberInList);
+
+        CardsQuaternionDic.Add(numberInList, rotation);
+    }
+
 
     public void SetUpLastPlane()
     {
@@ -92,7 +105,8 @@ public class ManeuversManager : MonoBehaviour
             if (maneuver.ContainCard())
             {                
                 int i = maneuversSlots.IndexOf(maneuver);
-                UpdateVectorList(maneuver.GetMovement(), i);
+                UpdateVectorDict(maneuver.GetMovement(), i);
+                UpdateQuaternionDict(maneuver.GetRotation(), i);
 
                 GameObject lastPlane = PlaneLastPosition(i);
                 
@@ -131,6 +145,10 @@ public class ManeuversManager : MonoBehaviour
         }        
     }
 
-
+    private void TurnEnd()
+    {
+        plane.GetComponent<Plane>().Movements = new List<Vector2>(CardsVectorDic.Values);
+        plane.GetComponent<Plane>().Rotations = new List<Quaternion>(CardsQuaternionDic.Values);
+    }
     
 }

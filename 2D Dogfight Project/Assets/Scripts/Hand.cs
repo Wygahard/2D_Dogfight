@@ -15,8 +15,7 @@ public class Hand : MonoBehaviour, IDropHandler
 
     private void Start()
     {
-        DeactivateEmptySlot();
-        
+        DeactivateEmptySlot();        
     }
 
     private void OnEnable()

@@ -106,12 +106,7 @@ public class Maneuver : MonoBehaviour, IDropHandler
     {
         //Maneuver Manager is in charge of setting the starting plane   
         planeOutline.transform.Translate(GetMovement());
-
-        CardAsset ca = _card.GetComponent<CardManager>().cardAsset;
-        _Rotation = ca._rotation;
-
-        Quaternion quaternion = Quaternion.AngleAxis(_Rotation, Vector3.forward);
-        planeOutline.transform.rotation = planeOutline.transform.rotation * quaternion;        
+        planeOutline.transform.rotation = planeOutline.transform.rotation * GetRotation();        
     }
 
 
@@ -158,7 +153,19 @@ public class Maneuver : MonoBehaviour, IDropHandler
         return movement;
     }
 
+    public Quaternion GetRotation()
+    {
+        if (!ContainCard())
+            Debug.LogWarning("GetRotation was called but no card is attached to" + name);
 
+        //GET CARD DATA
+        CardAsset ca = _card.GetComponent<CardManager>().cardAsset;
+        _Rotation = ca._rotation;
+
+        Quaternion quaternion = Quaternion.AngleAxis(_Rotation, Vector3.forward);
+
+        return quaternion;
+    }
 }
 
 
