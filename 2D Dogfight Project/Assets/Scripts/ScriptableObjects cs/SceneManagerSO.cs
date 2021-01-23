@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [CreateAssetMenu(fileName = "SceneManager", menuName = "Game /SceneManager")]
-public class GameManagerSO : ScriptableObject
+public class SceneManagerSO : ScriptableObject
 {
     public void MainMenu()
     {

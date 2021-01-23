@@ -1,23 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class GameManager : MonoSingleton<GameManager>
 {
+    float turncount;
 
-    public override void Init()
+    private void Awake()
     {
-        base.Init();
-    }
+        turncount = 1;
 
-
-   public Action onEndTurn;
-
-   public void EndTurn()
-    {
-        Debug.Log(onEndTurn);
-        onEndTurn?.Invoke();
     }
 
 }
