@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
     public Deck deck;
     public Hand hand;
     public GameObject plane;
-
    
     private void Update()
     {

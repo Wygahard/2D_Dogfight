@@ -30,16 +30,14 @@ public class Plane : MonoBehaviour
     
     private void TurnEnd()
     {
-        MovePlane();
+        MovePlane();        
     }
 
-    
     private void MovePlane()
     {
         StartCoroutine(MovePlaneRoutine());
     }
 
-    
     IEnumerator MovePlaneRoutine()
     {
         yield return new WaitForSecondsRealtime(.1f);
@@ -47,11 +45,8 @@ public class Plane : MonoBehaviour
         foreach(Vector2 move in Movements)
         {
             yield return new WaitForSecondsRealtime(.8f);
-            transform.Translate(move);
-            transform.rotation = transform.rotation * Rotations[Movements.IndexOf(move)];
-        }
-        
-
-    }
-    
+            ICommand command = new MovePlaneCommand(transform, move, Rotations[Movements.IndexOf(move)]);
+            CommandInvoker.AddCommand(command);
+        }        
+    }    
 }

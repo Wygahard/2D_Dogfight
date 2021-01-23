@@ -17,7 +17,7 @@ public class CommandInvoker : MonoBehaviour
     public static void AddCommand(ICommand command)
     {
         //check if a new command arrives while we're undoing
-        //Create a new timeline
+            //Create a new timeline
         while(commandHistory.Count > counter)
         {
             commandHistory.RemoveAt(counter);
@@ -35,6 +35,26 @@ public class CommandInvoker : MonoBehaviour
 
             commandHistory.Add(c);
             counter++;
+        }
+        //move in the command history
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                if(counter > 0)
+                {
+                    counter--;
+                    commandHistory[counter].Undo();
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                if(counter < commandHistory.Count)
+                {
+                    commandHistory[counter].Execute();
+                    counter++;
+                }                
+            }
         }
     }
 }

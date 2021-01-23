@@ -8,6 +8,12 @@ public class TurnManagerSO : ScriptableObject
 {
     public event UnityAction OnEndTurn;
 
+    private void Awake()
+    {
+        Debug.Log("Script Turn manager");
+
+    }
+
     public void EndTurn()
     {
         //Debug.Log("DropHappened was called");
