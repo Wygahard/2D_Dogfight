@@ -20,8 +20,7 @@ public class Deck : MonoBehaviour {
         
         GameObject _card = Instantiate(_cardPrefab);
         CardManager manager = _card.GetComponent<CardManager>();
-        manager.cardAsset = ca;
-        manager.ApplyCardAsset();
+        manager.ApplyCardAsset(ca);
 
         return _card;
     }

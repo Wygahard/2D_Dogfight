@@ -14,21 +14,15 @@ public class Maneuver : MonoBehaviour, IDropHandler
 
     public GameObject planeOutline;
     //public GameObject planeLastKnownPosition = new GameObject();
-
-
-    //Preview parameters
-    [SerializeField]
-    public bool _Preview;
-    Vector2 movement;
-
-    Quaternion _currentRotation;
+    
+    //Vector2 movement;
+    //Quaternion rotation;
     float _Rotation;    
 
     private void Start()
     {
         maneuversManager = transform.GetComponentInParent<ManeuversManager>();
         //hand = maneuversManager.player.hand;
-        _currentRotation = transform.rotation;
     }
        
     //planeOutline.SetActive(true);
@@ -105,66 +99,28 @@ public class Maneuver : MonoBehaviour, IDropHandler
     public void UpdateOutline()
     {
         //Maneuver Manager is in charge of setting the starting plane   
-        planeOutline.transform.Translate(GetMovement());
-        planeOutline.transform.rotation = planeOutline.transform.rotation * GetRotation();        
+        planeOutline.transform.Translate(CardMovement());
+        planeOutline.transform.rotation = planeOutline.transform.rotation * CardRotation();        
     }
 
 
-    public Vector2 GetMovement()
+    public Vector2 CardMovement()
     {
         if (!ContainCard())
             Debug.LogWarning("GetMovement was called but no card is attached to" + name);
-
-        //GET CARD DATA
-        CardAsset ca = _card.GetComponent<CardManager>().cardAsset;        
-
-        float scale = 50f;
-
-        Vector2 movement;
-        //CardAsset ca = transform.GetComponentInChildren<CardManager>().cardAsset;
-        float Xmove = (-ca._lowStartPoint.x + ca._lowEndPoint.x) / scale;
-        float Ymove = (-ca._lowStartPoint.y + ca._lowEndPoint.y) / scale;
-
-        //Change vector regarding starting orientation
-        switch (ca.orientation.ToString())
-        {
-            case "South":
-                movement = new Vector2(Xmove, Ymove);
-                break;
-
-            case "West":
-                movement = new Vector2(-Ymove, Xmove);
-                break;
-
-            case "East":
-                movement = new Vector2(Ymove, -Xmove);
-                break;
-
-            case "North":
-                movement = new Vector2(-Xmove, -Ymove);
-                break;
-
-            default:
-                Debug.Log("Card orientation not recognized");
-                movement = new Vector2(Xmove, Ymove);
-                break;
-        }
-
+        
+        Vector2 movement = _card.GetComponent<CardManager>().movement;
         return movement;
     }
 
-    public Quaternion GetRotation()
+    public Quaternion CardRotation()
     {
         if (!ContainCard())
             Debug.LogWarning("GetRotation was called but no card is attached to" + name);
 
-        //GET CARD DATA
-        CardAsset ca = _card.GetComponent<CardManager>().cardAsset;
-        _Rotation = ca._rotation;
+        Quaternion rotation = _card.GetComponent<CardManager>().rotation;
 
-        Quaternion quaternion = Quaternion.AngleAxis(_Rotation, Vector3.forward);
-
-        return quaternion;
+        return rotation;
     }
 }
 

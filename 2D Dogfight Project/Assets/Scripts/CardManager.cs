@@ -6,13 +6,13 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Sprite))]
 public class CardManager : MonoBehaviour {
 
-
-    
-
-    public CardAsset cardAsset;
+    private CardAsset cardAsset;
     [Header("Image References")]
     public Sprite CardGraphicImage;
     public string Symbol;
+    public Vector2 movement;
+    public Quaternion rotation;
+
     
     [Header("Movement References")]
     public RectTransform LowStartPoint;
@@ -25,28 +25,30 @@ public class CardManager : MonoBehaviour {
     private Vector2 lowEnd;
     private Vector2 highStart;
     private Vector2 highEnd;
-    private float rotation;
+    private float rotationDegree;
 
     public int positionInHand;
 
     public bool _DebugMode;
     public Text Infos;
 
-
+    /*
     void Awake()
     {
         if (cardAsset != null && !_DebugMode)
             ApplyCardAsset();
     }
-
+    */
    
-    public void ApplyCardAsset()
+    public void ApplyCardAsset(CardAsset ca)
     {
         //Image
-        CardGraphicImage = cardAsset._artwork;
-        this.GetComponent<Image>().sprite = CardGraphicImage;
-        Symbol = cardAsset._symbol.ToString();
+        this.GetComponent<Image>().sprite = ca._artwork;
+        this.Symbol = ca._symbol.ToString();
+        this.movement = ca.GetMovement();
+        this.rotation = ca.GetRotation();
 
+        /*
         //Start and End point
         LowStartPoint.localPosition = cardAsset._lowStartPoint;
         LowEndPoint.localPosition = cardAsset._lowEndPoint;
@@ -54,6 +56,7 @@ public class CardManager : MonoBehaviour {
         HighEndPoint.localPosition = cardAsset._HighEndPoint;
 
         rotation = cardAsset._rotation;
+        */
     }
 
     public void Update()
@@ -65,7 +68,7 @@ public class CardManager : MonoBehaviour {
             lowEnd = LowEndPoint.anchoredPosition;
             highStart = HighStartPoint.anchoredPosition;
             highEnd = HighEndPoint.anchoredPosition;
-            rotation = PlaneZ.transform.rotation.z;
+            rotationDegree = PlaneZ.transform.rotation.z;
 
             Infos.text = cardAsset.name + "\r\nCoordinates \r\nLow Start: " + lowStart + "\r\nLow End: " + lowEnd + "\r\nHigh Start: " + highStart + "\r\nHigh End: " + highEnd + "\r\nrotation: " + rotation;
         }
