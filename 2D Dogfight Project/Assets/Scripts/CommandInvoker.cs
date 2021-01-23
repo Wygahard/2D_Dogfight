@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +16,12 @@ public class CommandInvoker : MonoBehaviour
 
     public static void AddCommand(ICommand command)
     {
+        //check if a new command arrives while we're undoing
+        //Create a new timeline
+        while(commandHistory.Count > counter)
+        {
+            commandHistory.RemoveAt(counter);
+        }
         commandBuffer.Enqueue(command);
     }
 

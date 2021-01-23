@@ -105,8 +105,8 @@ public class ManeuversManager : MonoBehaviour
             if (maneuver.ContainCard())
             {                
                 int i = maneuversSlots.IndexOf(maneuver);
-                UpdateVectorDict(maneuver.GetMovement(), i);
-                UpdateQuaternionDict(maneuver.GetRotation(), i);
+                UpdateVectorDict(maneuver.CardMovement(), i);
+                UpdateQuaternionDict(maneuver.CardRotation(), i);
 
                 GameObject lastPlane = PlaneLastPosition(i);
                 

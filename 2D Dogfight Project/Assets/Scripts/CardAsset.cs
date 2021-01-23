@@ -13,12 +13,14 @@ public class CardAsset : ScriptableObject
     public Orientation orientation;
     
     //public string _name;    
-    public Vector2 _lowStartPoint;
-    public Vector2 _lowEndPoint;
-    public Vector2 _HighStartPoint;    
-    public Vector2 _HighEndPoint;
+    [SerializeField] private Vector2 _lowStartPoint;
+    [SerializeField] private Vector2 _lowEndPoint;
+    [SerializeField] private Vector2 _HighStartPoint;    
+    [SerializeField] private Vector2 _HighEndPoint;
+    [SerializeField] private float _rotation;
 
-    public float _rotation;
+    public Vector2 movement;
+    public Quaternion rotation;
 
     public enum DeckNumber
     {
@@ -48,5 +50,49 @@ public class CardAsset : ScriptableObject
         East, //2
         North //3
     }
+
+    public Vector2 GetMovement()
+    {        
+        float scale = 50f;
+        
+        //CardAsset ca = transform.GetComponentInChildren<CardManager>().cardAsset;
+        float Xmove = (_lowEndPoint.x -_lowStartPoint.x) / scale;
+        float Ymove = (_lowEndPoint.y - _lowStartPoint.y) / scale;
+
+        //Change vector regarding starting orientation
+        switch (orientation.ToString())
+        {
+            case "South":
+                movement = new Vector2(Xmove, Ymove);
+                break;
+
+            case "West":
+                movement = new Vector2(-Ymove, Xmove);
+                break;
+
+            case "East":
+                movement = new Vector2(Ymove, -Xmove);
+                break;
+
+            case "North":
+                movement = new Vector2(-Xmove, -Ymove);
+                break;
+
+            default:
+                Debug.Log("Card orientation not recognized");
+                movement = new Vector2(Xmove, Ymove);
+                break;
+        }
+        return movement;
+    }
+
+
+    public Quaternion GetRotation()
+    {
+        Quaternion quaternion = Quaternion.AngleAxis(_rotation, Vector3.forward);
+        return quaternion;
+    }
+
+
 }
 
