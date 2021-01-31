@@ -6,13 +6,8 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "TurnManager", menuName = "Game /TurnManager")]
 public class TurnManagerSO : ScriptableObject
 {
+    /*
     public event UnityAction OnEndTurn;
-
-    private void Awake()
-    {
-        Debug.Log("Script Turn manager");
-
-    }
 
     public void EndTurn()
     {
@@ -26,4 +21,5 @@ public class TurnManagerSO : ScriptableObject
             Debug.LogWarning("An End Turn was requested but is empty");
         }
     }
+    */
 }

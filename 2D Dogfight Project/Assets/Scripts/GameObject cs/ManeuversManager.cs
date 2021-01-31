@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 public class ManeuversManager : MonoBehaviour
 {
     [SerializeField] private OnDropEvent _onDropEvent;
-    [SerializeField] private TurnManagerSO _turnManager;
 
     public List<Maneuver> maneuversSlots = new List<Maneuver>();
     public Dictionary<int, Vector2> CardsVectorDic = new Dictionary<int, Vector2>();
@@ -29,14 +28,13 @@ public class ManeuversManager : MonoBehaviour
     private void OnEnable()
     {
         _onDropEvent.onDropEvent += DropHappened;
-        _turnManager.OnEndTurn += TurnEnd;
+        GameManager.Instance.OnEndTurn += TurnEnd;
     }
-
 
     private void OnDisable()
     {
         _onDropEvent.onDropEvent -= DropHappened;
-        _turnManager.OnEndTurn -= TurnEnd;
+        GameManager.Instance.OnEndTurn -= TurnEnd;
     }
 
     private void DropHappened()
@@ -145,10 +143,27 @@ public class ManeuversManager : MonoBehaviour
         }        
     }
 
+    //Transfer Information to Plane
     private void TurnEnd()
     {
         plane.GetComponent<Plane>().Movements = new List<Vector2>(CardsVectorDic.Values);
         plane.GetComponent<Plane>().Rotations = new List<Quaternion>(CardsQuaternionDic.Values);
+        CleanManeuvers();
     }
-    
+
+    private void CleanManeuvers()
+    {
+        foreach (var maneuver in maneuversSlots)
+        {
+            if (maneuver.ContainCard())
+            {
+                maneuver._card = null;
+                maneuver.ContainCard();
+            }
+            else
+            {
+                Debug.LogError("Maneuver Slot " + maneuver + " should have a card");
+            }
+        }
+    }
 }

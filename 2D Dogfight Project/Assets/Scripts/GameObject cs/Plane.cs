@@ -4,21 +4,18 @@ using UnityEngine;
 
 public class Plane : MonoBehaviour
 {
-
-    [SerializeField] private TurnManagerSO _turnManager;
-
     public List<Vector2> Movements = new List<Vector2>();
     public List<Quaternion> Rotations = new List<Quaternion>();
 
     private void OnEnable()
     {
-        _turnManager.OnEndTurn += TurnEnd;
+        GameManager.Instance.OnEndTurn += TurnEnd;
     }
 
 
     private void OnDisable()
     {
-        _turnManager.OnEndTurn -= TurnEnd;
+        GameManager.Instance.OnEndTurn -= TurnEnd;
     }
 
     private void Start()
