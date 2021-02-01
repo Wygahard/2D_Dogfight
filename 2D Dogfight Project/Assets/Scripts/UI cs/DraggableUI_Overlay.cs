@@ -9,6 +9,32 @@ public class DraggableUI_Overlay : MonoBehaviour, IBeginDragHandler, IDragHandle
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
 
+    //
+    private void OnEnable()
+    {
+        canvasGroup.blocksRaycasts = false;
+        GameManager.Instance.OnGamePhase += GamePhase;
+        GameManager.Instance.OnEndTurn += EndTurn;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnGamePhase -= GamePhase;
+        GameManager.Instance.OnEndTurn -= EndTurn;
+    }
+
+    private void GamePhase()
+    {
+        //Make Card Interactable or not
+        canvasGroup.blocksRaycasts = true;
+    }
+
+    private void EndTurn()
+    {
+        canvasGroup.blocksRaycasts = false;
+    }
+
+    //MOVEMENT SECTION
     // distance from the center of this Game Object to the point where we clicked to start dragging 
     private Vector3 pointerDisplacement = Vector3.zero;
 
@@ -18,7 +44,6 @@ public class DraggableUI_Overlay : MonoBehaviour, IBeginDragHandler, IDragHandle
        canvasGroup = GetComponent<CanvasGroup>();
        rectTransform = GetComponent<RectTransform>();
     }
-
 
     public void OnBeginDrag(PointerEventData eventData)
     {

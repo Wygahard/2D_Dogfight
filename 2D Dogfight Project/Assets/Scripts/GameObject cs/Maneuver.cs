@@ -22,10 +22,8 @@ public class Maneuver : MonoBehaviour, IDropHandler
     private void Start()
     {
         maneuversManager = transform.GetComponentInParent<ManeuversManager>();
-        //hand = maneuversManager.player.hand;
     }
-       
-    //planeOutline.SetActive(true);
+     
 
     //CHECK IF CONTAINS CARD
     public bool ContainCard()
@@ -38,13 +36,23 @@ public class Maneuver : MonoBehaviour, IDropHandler
                 return true;
             }
         }
-        //Deactivate card if it's associate to another parent
+        //Deactivate card if it's associated to another parent
         if (_card != null)
+        {
             _card = null;
-
+        }        
         return false;
     }
 
+    public void CleanCard()
+    {
+        if (ContainCard())
+        {
+            Destroy(_card);
+            planeOutline.SetActive(false);
+        }
+
+    }
 
     public void OnDrop(PointerEventData eventData)
     {
@@ -86,6 +94,7 @@ public class Maneuver : MonoBehaviour, IDropHandler
             maneuversManager.TriggerDropCheck();
         }
     }
+
 
     //CALLED BY MANEUVER MANAGER WITH GetManeuversSlots()
     public void UpdateNumberList(int i)
