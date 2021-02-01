@@ -7,25 +7,13 @@ public class Plane : MonoBehaviour
     public List<Vector2> Movements = new List<Vector2>();
     public List<Quaternion> Rotations = new List<Quaternion>();
 
-    private void OnEnable()
-    {
-        GameManager.Instance.OnEndTurn += TurnEnd;
-    }
-
-
-    private void OnDisable()
-    {
-        GameManager.Instance.OnEndTurn -= TurnEnd;
-    }
-
     private void Start()
     {        
         transform.position = new Vector2(0,-5);
         transform.rotation = Quaternion.identity;
-    }
+    }    
     
-    
-    private void TurnEnd()
+    public void TurnEnd()
     {
         MovePlane();        
     }
@@ -44,6 +32,9 @@ public class Plane : MonoBehaviour
             yield return new WaitForSecondsRealtime(.8f);
             ICommand command = new MovePlaneCommand(transform, move, Rotations[Movements.IndexOf(move)]);
             CommandInvoker.AddCommand(command);
-        }        
+        }
+
+        yield return new WaitForSecondsRealtime(.8f);
+        GameManager.Instance.BeginTurn();
     }    
 }

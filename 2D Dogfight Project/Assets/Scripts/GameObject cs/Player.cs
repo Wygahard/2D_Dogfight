@@ -49,7 +49,10 @@ public class Player : MonoBehaviour
                 yield return new WaitForSecondsRealtime(.5f);
                 DrawCard();
             }
-        }        
+        }
+        //Sorry I can't figure something else out
+        yield return new WaitForSecondsRealtime(.1f);
+        GameManager.Instance.GamePhase();
     }
 
     private void DrawCard()

@@ -40,11 +40,19 @@ public class Maneuver : MonoBehaviour, IDropHandler
         if (_card != null)
         {
             _card = null;
-        }
-        planeOutline.SetActive(false);
+        }        
         return false;
     }
 
+    public void CleanCard()
+    {
+        if (ContainCard())
+        {
+            Destroy(_card);
+            planeOutline.SetActive(false);
+        }
+
+    }
 
     public void OnDrop(PointerEventData eventData)
     {

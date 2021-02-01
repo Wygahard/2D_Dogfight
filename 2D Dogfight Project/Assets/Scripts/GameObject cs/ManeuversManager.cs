@@ -28,12 +28,14 @@ public class ManeuversManager : MonoBehaviour
     private void OnEnable()
     {
         _onDropEvent.onDropEvent += DropHappened;
+        GameManager.Instance.OnBeginTurn += NewTurn;
         GameManager.Instance.OnEndTurn += TurnEnd;
     }
 
     private void OnDisable()
     {
         _onDropEvent.onDropEvent -= DropHappened;
+        GameManager.Instance.OnBeginTurn -= TurnEnd;
         GameManager.Instance.OnEndTurn -= TurnEnd;
     }
 
@@ -143,12 +145,21 @@ public class ManeuversManager : MonoBehaviour
         }        
     }
 
+
+    //Clean Slots if not empty, reset outline
+    private void NewTurn()
+    {
+        CleanManeuvers();
+
+    }
+
+
     //Transfer Information to Plane
     private void TurnEnd()
     {
         plane.GetComponent<Plane>().Movements = new List<Vector2>(CardsVectorDic.Values);
         plane.GetComponent<Plane>().Rotations = new List<Quaternion>(CardsQuaternionDic.Values);
-        CleanManeuvers();
+        plane.GetComponent<Plane>().TurnEnd();
     }
 
     private void CleanManeuvers()
@@ -157,8 +168,7 @@ public class ManeuversManager : MonoBehaviour
         {
             if (maneuver.ContainCard())
             {
-                maneuver._card = null;
-                maneuver.ContainCard();
+                maneuver.CleanCard();
             }
             else
             {

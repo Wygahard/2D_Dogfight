@@ -12,17 +12,18 @@ public class DraggableUI_Overlay : MonoBehaviour, IBeginDragHandler, IDragHandle
     //
     private void OnEnable()
     {
-        GameManager.Instance.OnBeginTurn += BeginTurn;
+        canvasGroup.blocksRaycasts = false;
+        GameManager.Instance.OnGamePhase += GamePhase;
         GameManager.Instance.OnEndTurn += EndTurn;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnBeginTurn -= BeginTurn;
+        GameManager.Instance.OnGamePhase -= GamePhase;
         GameManager.Instance.OnEndTurn -= EndTurn;
     }
 
-    private void BeginTurn()
+    private void GamePhase()
     {
         //Make Card Interactable or not
         canvasGroup.blocksRaycasts = true;
