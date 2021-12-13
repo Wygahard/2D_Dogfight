@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: ab217063d9e15ad46ab925bd5059731b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _onDropEvent: {fileID: 11400000, guid: 82e3b97ffd89d4d4787e53778a65a79c, type: 2}
+  - _turnManager: {fileID: 11400000, guid: e621e085a55f2b14ab882e7c78d2936b, type: 2}
+  - player: {instanceID: 0}
+  - hand: {instanceID: 0}
+  - plane: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
